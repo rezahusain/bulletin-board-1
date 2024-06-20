@@ -1,0 +1,67 @@
+<div>
+  <div>
+    <h1>
+      <%= @the_board.name %>
+    </h1>
+    <hr>
+
+  </div>
+</div>
+
+<h2>Add a new post</h2>
+
+<form action="/insert_post" method="post">
+  <div>
+    <label for="title_field">Title</label>
+    <input type="text" id="title_field" name="title">
+  </div>
+  <div>
+    <label for="body_field">Body</label>
+    <textarea id="body_field" name="body" cols="30" rows="10"></textarea>
+  </div>
+  <div>
+    <label for="expires_on_field">Expires on</label>
+    <input type="date" id="expires_on_field" name="expires_on">
+  </div>
+  <input type="hidden" id="board_id_field" name="board_id" value="<%=@the_board.id%>">
+  <button>
+    Add post
+  </button>
+</form>
+
+<h2>Active posts</h2>
+
+<%matching_posts = Post.where({:board_id => @the_board.id}).order({:expires_on => :asc})%>
+
+<table border="1">
+  <tr>
+    <th>
+      Title
+    </th>
+    <th>
+     Body
+    </th>
+    <th>
+      Posted on
+    </th>
+    <th>
+      Expires on
+    </th>
+  </tr>
+<%matching_posts.each do |a_post|%>
+  <tr>
+    <td>
+      <%=a_post.title%>
+    </td>
+    <td>
+      <%=a_post.body%>
+    </td>
+    <td>
+      <%=a_post.created_at.strftime("%b %e, %Y")%>
+    </td>
+    <td>
+      <%=a_post.expires_on.strftime("%b %e, %Y")%>
+    </td>
+  </tr>
+<%end%>
+</table>
